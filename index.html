@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ghana FX Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="converter-panel" aria-labelledby="converter-title">
+        <div class="panel-header">
+          <p class="eyebrow">Phase 1</p>
+          <h1 id="converter-title">Currency Converter</h1>
+          <p class="lede">
+            Convert between world currencies and see the rate source and update time before you decide what to do next.
+          </p>
+        </div>
+
+        <form class="converter-form" id="converter-form" novalidate>
+          <label class="field">
+            <span>Amount</span>
+            <input
+              id="amount"
+              name="amount"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="0.01"
+              placeholder="1000"
+              required
+            />
+          </label>
+
+          <div class="currency-row">
+            <label class="field">
+              <span>From</span>
+              <select id="from-currency" name="fromCurrency" required></select>
+            </label>
+
+            <button class="swap-button" id="swap-currencies" type="button" aria-label="Swap currencies" title="Swap currencies">
+              Swap
+            </button>
+
+            <label class="field">
+              <span>To</span>
+              <select id="to-currency" name="toCurrency" required></select>
+            </label>
+          </div>
+
+          <button class="primary-action" type="submit">Convert</button>
+        </form>
+
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+
+        <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+          <p class="result-label">Estimated conversion</p>
+          <p class="result-amount" id="result-amount"></p>
+          <dl class="rate-meta">
+            <div>
+              <dt>Currency pair</dt>
+              <dd id="result-pair"></dd>
+            </div>
+            <div>
+              <dt>Rate</dt>
+              <dd id="result-rate"></dd>
+            </div>
+            <div>
+              <dt>Source</dt>
+              <dd id="result-source"></dd>
+            </div>
+            <div>
+              <dt>Last updated</dt>
+              <dd id="result-updated"></dd>
+            </div>
+          </dl>
+        </section>
+
+        <p class="data-note">
+          Phase 1 uses a bundled demo rate fixture so the converter works offline. Live official, bureau, partner,
+          scraped, and user-reported rate sources are planned for later phases.
+        </p>
+      </section>
+
+      <section class="directory-panel" aria-labelledby="directory-title">
+        <div class="panel-header">
+          <p class="eyebrow">Phase 2</p>
+          <h2 id="directory-title">Ghana Forex Bureau Directory</h2>
+          <p class="lede">
+            Browse and search seeded Ghana bureau profiles sorted by best rating, then open a profile to review contact
+            details, verification status, supported currencies, and visible demo rates.
+          </p>
+        </div>
+
+        <form class="search-form" id="bureau-search-form" novalidate>
+          <label class="field">
+            <span>City or area</span>
+            <input id="bureau-query" name="query" type="search" placeholder="Accra, Osu, Kumasi, Tema" />
+          </label>
+
+          <div class="currency-row search-currency-row">
+            <label class="field">
+              <span>From currency</span>
+              <select id="search-from-currency" name="searchFromCurrency"></select>
+            </label>
+
+            <label class="field">
+              <span>To currency</span>
+              <select id="search-to-currency" name="searchToCurrency"></select>
+            </label>
+          </div>
+
+          <div class="search-actions">
+            <button class="primary-action" type="submit">Search bureaus</button>
+            <button class="secondary-action" id="use-location" type="button">Use my location</button>
+            <button class="quiet-action" id="clear-search" type="button">Clear</button>
+          </div>
+        </form>
+
+        <p class="search-status" id="search-status" role="status"></p>
+
+        <div class="directory-layout">
+          <section aria-labelledby="bureau-list-title">
+            <div class="section-heading">
+              <h3 id="bureau-list-title">Top Rated Bureaus</h3>
+              <p id="bureau-count"></p>
+            </div>
+            <div class="bureau-list" id="bureau-list"></div>
+          </section>
+
+          <aside class="profile-panel" id="bureau-profile" aria-labelledby="profile-title"></aside>
+        </div>
+      </section>
+
+      <section class="directory-panel" aria-labelledby="owner-title">
+        <div class="panel-header">
+          <p class="eyebrow">Phase 4</p>
+          <h2 id="owner-title">Bureau Owner Dashboard</h2>
+          <p class="lede">
+            Create a demo owner account, claim a bureau profile, update public contact details, manage supported
+            currencies, and view the profile rating.
+          </p>
+        </div>
+
+        <div class="owner-layout">
+          <form class="owner-form" id="owner-account-form" novalidate>
+            <h3>Create owner account</h3>
+            <label class="field">
+              <span>Owner name</span>
+              <input id="owner-name" name="ownerName" type="text" placeholder="Ama Mensah" required />
+            </label>
+            <label class="field">
+              <span>Owner email</span>
+              <input id="owner-email" name="ownerEmail" type="email" placeholder="owner@example.com" required />
+            </label>
+            <label class="field">
+              <span>Bureau to manage</span>
+              <select id="owner-bureau-select" name="ownerBureau" required></select>
+            </label>
+            <button class="primary-action" type="submit">Create dashboard</button>
+            <p class="search-status" id="owner-account-status" role="status"></p>
+          </form>
+
+          <form class="owner-form" id="owner-profile-form" novalidate>
+            <h3>Manage claimed profile</h3>
+            <div class="owner-summary" id="owner-summary">
+              Create an owner account to unlock profile management.
+            </div>
+            <label class="field">
+              <span>Public phone</span>
+              <input id="owner-phone" name="ownerPhone" type="tel" disabled required />
+            </label>
+            <label class="field">
+              <span>Public email</span>
+              <input id="owner-profile-email" name="ownerProfileEmail" type="email" disabled required />
+            </label>
+            <label class="field">
+              <span>Supported currencies</span>
+              <input id="owner-currencies" name="ownerCurrencies" type="text" disabled placeholder="GHS, USD, EUR" />
+            </label>
+            <button class="primary-action" id="save-owner-profile" type="submit" disabled>Save profile</button>
+            <p class="search-status" id="owner-profile-status" role="status"></p>
+          </form>
+        </div>
+
+        <div class="owner-layout">
+          <form class="owner-form" id="owner-rate-form" novalidate>
+            <h3>Update bureau rate</h3>
+            <div class="currency-row search-currency-row">
+              <label class="field">
+                <span>From currency</span>
+                <select id="owner-rate-from" name="ownerRateFrom" disabled></select>
+              </label>
+              <label class="field">
+                <span>To currency</span>
+                <select id="owner-rate-to" name="ownerRateTo" disabled></select>
+              </label>
+            </div>
+            <div class="currency-row search-currency-row">
+              <label class="field">
+                <span>Buy rate</span>
+                <input id="owner-buy-rate" name="ownerBuyRate" type="number" step="0.0001" min="0" disabled required />
+              </label>
+              <label class="field">
+                <span>Sell rate</span>
+                <input id="owner-sell-rate" name="ownerSellRate" type="number" step="0.0001" min="0" disabled required />
+              </label>
+            </div>
+            <label class="field">
+              <span>Rate source</span>
+              <select id="owner-rate-source" name="ownerRateSource" disabled>
+                <option value="bureau-submitted">Bureau-submitted</option>
+                <option value="official">Official market</option>
+                <option value="partner-provided">Partner-provided</option>
+                <option value="scraped">Scraped</option>
+                <option value="user-reported">User-reported</option>
+              </select>
+            </label>
+            <button class="primary-action" id="save-owner-rate" type="submit" disabled>Save rate</button>
+            <p class="search-status" id="owner-rate-status" role="status"></p>
+          </form>
+
+          <section class="owner-form" aria-labelledby="rate-comparison-title">
+            <h3 id="rate-comparison-title">Public rate comparison</h3>
+            <div class="currency-row search-currency-row">
+              <label class="field">
+                <span>From currency</span>
+                <select id="compare-rate-from" name="compareRateFrom"></select>
+              </label>
+              <label class="field">
+                <span>To currency</span>
+                <select id="compare-rate-to" name="compareRateTo"></select>
+              </label>
+            </div>
+            <div class="comparison-list" id="rate-comparison-list"></div>
+          </section>
+        </div>
+
+        <section class="owner-form" aria-labelledby="booking-requests-title">
+          <h3 id="booking-requests-title">Booking requests</h3>
+          <div class="comparison-list" id="owner-booking-list">
+            <div class="empty-state">Create an owner account to view booking requests.</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="directory-panel" aria-labelledby="admin-title">
+        <div class="panel-header">
+          <p class="eyebrow">Phase 8</p>
+          <h2 id="admin-title">Admin Moderation Console</h2>
+          <p class="lede">
+            Verify bureaus, moderate profile details, review user reports, and disable suspicious bureau accounts.
+          </p>
+        </div>
+
+        <form class="owner-form" id="admin-login-form" novalidate>
+          <h3>Admin access</h3>
+          <label class="field">
+            <span>Admin email</span>
+            <input id="admin-email" name="adminEmail" type="email" value="admin@ghanafx.example" required />
+          </label>
+          <button class="primary-action" type="submit">Open admin console</button>
+          <p class="search-status" id="admin-status" role="status"></p>
+        </form>
+
+        <div class="owner-layout">
+          <form class="owner-form" id="admin-profile-form" novalidate>
+            <h3>Moderate bureau profile</h3>
+            <label class="field">
+              <span>Bureau</span>
+              <select id="admin-bureau-select" name="adminBureau" disabled></select>
+            </label>
+            <label class="field">
+              <span>Name</span>
+              <input id="admin-bureau-name" name="adminBureauName" type="text" disabled />
+            </label>
+            <div class="currency-row search-currency-row">
+              <label class="field">
+                <span>Area</span>
+                <input id="admin-bureau-area" name="adminBureauArea" type="text" disabled />
+              </label>
+              <label class="field">
+                <span>City</span>
+                <input id="admin-bureau-city" name="adminBureauCity" type="text" disabled />
+              </label>
+            </div>
+            <div class="currency-row search-currency-row">
+              <label class="field">
+                <span>Phone</span>
+                <input id="admin-bureau-phone" name="adminBureauPhone" type="tel" disabled />
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input id="admin-bureau-email" name="adminBureauEmail" type="email" disabled />
+              </label>
+            </div>
+            <div class="booking-actions">
+              <button class="primary-action" id="admin-save-profile" type="submit" disabled>Save profile</button>
+              <button class="secondary-action" id="admin-verify-bureau" type="button" disabled>Verify</button>
+              <button class="quiet-action" id="admin-unverify-bureau" type="button" disabled>Unverify</button>
+              <button class="quiet-action" id="admin-disable-bureau" type="button" disabled>Disable</button>
+            </div>
+          </form>
+
+          <section class="owner-form" aria-labelledby="admin-reports-title">
+            <h3 id="admin-reports-title">Open reports</h3>
+            <div class="comparison-list" id="admin-report-list">
+              <div class="empty-state">Open the admin console to review reports.</div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="src/converter.js"></script>
+    <script src="src/bureaus.js"></script>
+    <script src="src/search.js"></script>
+    <script src="src/rates.js"></script>
+    <script src="src/owners.js"></script>
+    <script src="src/bookings.js"></script>
+    <script src="src/trust.js"></script>
+    <script src="src/admin.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
