@@ -616,11 +616,11 @@
         <article class="comparison-row">
           <div>
             <strong>${rate.bureauName}</strong>
-            <p>${rate.area}, ${rate.city} · ${rate.rating.toFixed(1)} rating</p>
+            <p>${rate.area}, ${rate.city} - ${rate.rating.toFixed(1)} rating</p>
           </div>
           <div>
             <strong>${rate.pair}</strong>
-            <p>Buy ${rate.buy} · Sell ${rate.sell}</p>
+            <p>Buy ${rate.buy} - Sell ${rate.sell}</p>
           </div>
           <div>
             <strong>${rate.source}</strong>
